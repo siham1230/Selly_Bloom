@@ -2,7 +2,8 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions } from "rea
 // import { useMemo } from 'react';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
+import { useAuthStore } from "../store/authStore";
 
 
 const { width } = Dimensions.get("window");
@@ -17,9 +18,20 @@ const images = [
 
 const OnboardingScreen = () => {
 
+
+    const { token } = useAuthStore()
+
+
+
+
     const handleGetStarted = () => {
         router.push('/(auth)/AuthSelection');
     };
+
+    if (token) {
+
+        return <Redirect href={'/(tabs)/home'} />
+    }
     return (
 
         <SafeAreaView style={styles.container}>

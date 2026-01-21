@@ -1,35 +1,29 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export const useAuthStore = create(
+    persist(
+        (set) => ({
+            user: null,
+            token: null,
 
-export const useAuthStore = create((set) => ({
-    user: null,
-    token: null,
-    loading: true,
+            loading: true,
 
+            setAuth: (user, token) => {
+                set({ user, token, loading: false });
+            },
 
-    setAuth: async (user, token) => {
-        await AsyncStorage.setItem('token', token);
-        await AsyncStorage.setItem('user', JSON.stringify(user));
+            logout: () => {
+                // No need to manually call AsyncStorage.removeItem!
+                set({ token: null, user: null });
+            },
 
-        set({ user, token, loading: false });
-    },
-
-    loadAuth: async () => {
-        const token = await AsyncStorage.getItem('token');
-        const user = await AsyncStorage.getItem('user');
-        if (token && user) {
-            set({ token, user: JSON.parse(user), loading: false });
-
-        } else {
-            set({ loading: false });
+            setLoading: (status) => set({ loading: status }),
+        }),
+        {
+            name: 'auth-storage', // unique name for the item in storage
+            storage: createJSONStorage(() => AsyncStorage), // use AsyncStorage for React Native
         }
-    },
-
-    logout: async () => {
-        await AsyncStorage.removeItem('token');
-        await AsyncStorage.removeItem('user');
-        set({ token: null, user: null });
-
-    },
-}));
+    )
+);

@@ -1,10 +1,13 @@
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { useSafeAreaFrame, } from 'react-native-safe-area-context';
 
 
 export default function TabLayout() {
+    const { bottom } = useSafeAreaFrame()
     return (
+        // <SafeAreaView style={{ flex: 1 }}>
+
         <Tabs
             screenOptions={{
                 headerShown: false,
@@ -14,8 +17,8 @@ export default function TabLayout() {
                     backgroundColor: '#FAFBF5',
                     borderTopColor: '#E5E6DE',
                     borderTopWidth: 1,
-                    height: 60,
-                    paddingBottom: 8,
+                    height: 80,
+                    paddingBottom: bottom + 20,
                     paddingTop: 8,
                 },
                 tabBarLabelStyle: {
@@ -35,11 +38,11 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="favorite"
+                name="favourite"
                 options={{
-                    title: 'Favorites',
+                    title: 'Favorite',
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="heart" size={size} color={color} />
+                        <FontAwesome name="heart" size={size} color={color} />
                     ),
                 }}
             />
@@ -54,15 +57,8 @@ export default function TabLayout() {
                     tabBarBadge: 3,
                 }}
             />
-            <Tabs.Screen
-                name="profile"
-                options={{
-                    title: 'Profile',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="person" size={size} color={color} />
-                    ),
-                }}
-            />
         </Tabs>
+        // </SafeAreaView>
+
     )
 }
