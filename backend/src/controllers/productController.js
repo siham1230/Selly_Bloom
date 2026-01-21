@@ -62,7 +62,10 @@ export const getProductById = async (req, res) => {
                 error: 'Product not found'
             });
         }
-        res.json({ product });
+        res.json({
+            success: true,
+            product
+        });
     } catch (error) {
         console.error('Get product error:', error);
         res.status(500).json({

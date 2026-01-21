@@ -42,7 +42,7 @@ const Register = () => {
             if (result.success) {
                 const { user, token } = result.data;
                 await useAuthStore.getState().setAuth(user, token);
-                router.replace('/home');
+                router.replace('/(tabs)/home');
 
             } else {
                 Alert.alert('Error', result.message || 'Registration failed');

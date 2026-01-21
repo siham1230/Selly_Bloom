@@ -35,7 +35,7 @@ const Login = () => {
                 if (user.role === 'admin') {
                     // router.replace('/(admin)');
                 } else {
-                    router.replace('/home');
+                    router.replace('/(tabs)/home');
                 }
             } else {
                 Alert.alert('Error', result.message || 'Login failed');
