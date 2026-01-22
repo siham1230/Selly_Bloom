@@ -1,12 +1,13 @@
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFavoriteStore } from '../../store/favoriteStore';
 
 const FavoriteScreen = () => {
 
-    const favoriteItems = [];
+    const favoriteItems = useFavoriteStore((state) => state.favorites);
 
     return (
-        <SafeAreaView style={StyleSheet.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>My Favorites</Text>
                 <Text style={styles.subtitle}>Your saved Flowers ❤️</Text>
@@ -22,14 +23,22 @@ const FavoriteScreen = () => {
             ) : (
                 <FlatList
                     data={favoriteItems}
+                    keyExtractor={(item) => item.id.toString()}
+                    numColumns={3}
+                    contentContainerStyle={styles.list}
                     renderItem={({ item }) => (
                         <View style={styles.item}>
-                            <Text>{item.name}</Text>
+                            <Image
+                                source={{ uri: item.image }}
+                                style={styles.itemImage}
+                            />
+                            <Text style={styles.itemName}>{item.name}</Text>
                         </View>
                     )}
-                    keyExtractor={(item) => item.id}
                 />
             )}
+
+
         </SafeAreaView>
     );
 };
@@ -44,7 +53,7 @@ const styles = StyleSheet.create({
     header: {
         paddingHorizontal: 24,
         paddingTop: 20,
-        paddingBottom: 10.
+        paddingBottom: 10,
     },
     title: {
         fontSize: 40,
@@ -56,7 +65,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Lato_400Regular',
         color: '#81827C',
-        MmarginBottom: 20,
+        marginBottom: 20,
+        textAlign: 'center',
     },
     emptyContainer: {
         flex: 1,
@@ -79,6 +89,28 @@ const styles = StyleSheet.create({
         fontFamily: 'Lato_400Regular',
         color: '#81827C',
         opacity: 0.6,
+        textAlign: 'center',
+    },
+    list: {
+        paddingHorizontal: 12,
+        paddingBottom: 20,
+    },
+    item: {
+        flex: 1 / 3,
+        alignItems: 'center',
+        margin: 8,
+    },
+
+    itemImage: {
+        width: 110,
+        height: 110,
+        borderRadius: 14,
+        marginBottom: 8,
+    },
+    itemName: {
+        fontSize: 14,
+        fontFamily: 'Lato_700Bold',
+        color: '#81827C',
         textAlign: 'center',
     },
 });
