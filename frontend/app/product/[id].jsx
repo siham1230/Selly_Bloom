@@ -4,6 +4,8 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useProduct } from '../../hooks/useProducts';
+import { useCartStore } from '../../store/cartStore';
+import { useFavoriteStore } from '../../store/favoriteStore';
 
 export default function ProductDetail() {
 
@@ -11,8 +13,9 @@ export default function ProductDetail() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
 
-
-    const [isFavorite, setIsFavorite] = useState(false);
+    const addToCart = useCartStore((state) => state.addToCart);
+    // const [isFavorite, setIsFavorite] = useState(false);
+    const { addFavorite, removeFavorite, isFavorite } = useFavoriteStore();
     console.log('Product ID:', id);
 
     const { data: product, isLoading, isError, error } = useProduct(id);
@@ -20,8 +23,14 @@ export default function ProductDetail() {
 
     const handleAddToCart = () => {
         if (!product) return;
+        addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+        });
 
         Alert.alert('Success', `${product.name} added to cart!`);
+        router.push("/(tabs)/home");
     };
 
 
@@ -29,12 +38,19 @@ export default function ProductDetail() {
 
     const handleToggleFavorite = () => {
         if (!product) return;
+        if (isFavorite(product.id)) {
+            removeFavorite(product.id);
+            Alert.alert('Removed from favorites', product.name);
+        } else {
+            addFavorite({
+                id: product.id,
+                name: product.name,
+                image: product.image?.[0],
+                price: product.price,
+            });
+            Alert.alert('Added to favorites', product.name);
+        }
 
-        setIsFavorite((prev) => !prev);
-        Alert.alert(
-            !isFavorite ? 'Remove from favorites' : 'Added to favorites',
-            product.name
-        );
     };
 
     const handleGoBack = () => {
@@ -145,9 +161,9 @@ export default function ProductDetail() {
                     onPress={handleToggleFavorite}
                 >
                     <Ionicons
-                        name={isFavorite ? "heart" : "heart-outline"}
+                        name={isFavorite(product.id) ? "heart" : "heart-outline"}
                         size={26}
-                        color={isFavorite ? "#FF6B6B" : "#D9C0B3"}
+                        color={isFavorite(product.id) ? "#FF6B6B" : "#D9C0B3"}
                     />
 
                 </Pressable>

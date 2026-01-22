@@ -1,10 +1,11 @@
 import { Tabs } from 'expo-router';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useSafeAreaFrame, } from 'react-native-safe-area-context';
-
+import { useCartStore } from '../../store/cartStore';
 
 export default function TabLayout() {
     const { bottom } = useSafeAreaFrame()
+    const cartCount = useCartStore((state) => state.items.length);
     return (
         // <SafeAreaView style={{ flex: 1 }}>
 
@@ -54,7 +55,8 @@ export default function TabLayout() {
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="cart" size={size} color={color} />
                     ),
-                    tabBarBadge: 3,
+                    tabBarBadge: cartCount > 0 ? cartCount : undefined,
+
                 }}
             />
         </Tabs>
