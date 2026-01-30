@@ -13,21 +13,14 @@ const generateToken = (user) => {
 
 export const register = async (req, res) => {
     try {
+        console.log('📝 Registration attempt:', req.body);
+
         const { name, email, password, role } = req.body;
 
-        if (!name || !email || !password || !role) {
-            return res.status(400).json({
-                error: 'All fields are required'
-            });
-        }
 
-        if (password.length < 6) {
-            return res.status(400).json({
-                error: 'Password must be at least 6 characters'
-            });
-        }
 
         const existingUser = await User.findOne({ where: { email } });
+        console.log('🔍 Existing user check:', existingUser ? 'Found' : 'Not found');
         if (existingUser) {
             return res.status(400).json({
                 error: 'Email already registered'
@@ -35,7 +28,7 @@ export const register = async (req, res) => {
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        // user.password = hashedPassword;
+        console.log('🔐 Password hashed successfully');
 
         const user = await User.create({
             name,
@@ -44,9 +37,9 @@ export const register = async (req, res) => {
             role
         });
 
+        console.log('✅ User created:', user.id, user.email);
 
         const token = generateToken(user);
-        console.log("Generated token:", token);
 
         res.status(201).json({
             message: 'User registered successfully',
@@ -76,15 +69,15 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log("Login attempt for email:", email);
-        if (!email || !password) {
-            return res.status(400).json({
-                error: 'Email and password are required'
-            });
-        }
+        // console.log("Login attempt for email:", email);
+        // if (!email || !password) {
+        //     return res.status(400).json({
+        //         error: 'Email and password are required'
+        //     });
+        // }
 
         const user = await User.findOne({ where: { email } });
-        console.log("User found:", user ? "Yes" : "No");
+        // console.log("User found:", user ? "Yes" : "No");
 
         if (!user) {
             return res.status(401).json({
@@ -98,7 +91,6 @@ export const login = async (req, res) => {
             });
         }
         const isValidPassword = await bcrypt.compare(password, user.password);
-        console.log("Password valid:", isValidPassword);
 
         if (!isValidPassword) {
             return res.status(401).json({
@@ -163,11 +155,11 @@ export const updateProfile = async (req, res) => {
         const { name, email } = req.body;
         const userId = req.user.id;
 
-        if (!name && !email) {
-            return res.status(400).json({
-                error: 'At least one field (name or email) is required to update'
-            });
-        }
+        // if (!name && !email) {
+        //     return res.status(400).json({
+        //         error: 'At least one field (name or email) is required to update'
+        //     });
+        // }
         const user = await User.findByPk(userId);
         if (!user) {
             return res.status(404).json({
@@ -203,17 +195,17 @@ export const changePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
-        if (!currentPassword || !newPassword) {
-            return res.status(400).json({
-                error: 'All fields are required'
-            });
+        // if (!currentPassword || !newPassword) {
+        //     return res.status(400).json({
+        //         error: 'All fields are required'
+        //     });
 
-        }
-        if (newPassword.length < 6) {
-            return res.status(400).json({
-                error: 'New password must be at least 6 characters'
-            });
-        }
+        // }
+        // if (newPassword.length < 6) {
+        //     return res.status(400).json({
+        //         error: 'New password must be at least 6 characters'
+        //     });
+        // }
 
         const user = await User.findByPk(req.user.id);
 

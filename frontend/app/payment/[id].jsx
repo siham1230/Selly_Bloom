@@ -115,9 +115,13 @@ export default function Payment() {
                         multiline
                         textAlignVertical="top"
 
-                    // editable={!loading}
 
                     />
+
+                    {/* <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Choice</Text> */}
+
+                    {/* </View> */}
                 </View>
 
                 <Text style={styles.paymentHeader}>Payment Method</Text>

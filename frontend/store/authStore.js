@@ -7,7 +7,6 @@ export const useAuthStore = create(
         (set) => ({
             user: null,
             token: null,
-
             loading: true,
 
             setAuth: (user, token) => {
@@ -15,15 +14,14 @@ export const useAuthStore = create(
             },
 
             logout: () => {
-                // No need to manually call AsyncStorage.removeItem!
-                set({ token: null, user: null });
+                set({ token: null, user: null, loading: false });
             },
 
             setLoading: (status) => set({ loading: status }),
         }),
         {
-            name: 'auth-storage', // unique name for the item in storage
-            storage: createJSONStorage(() => AsyncStorage), // use AsyncStorage for React Native
+            name: 'auth-storage',
+            storage: createJSONStorage(() => AsyncStorage),
         }
     )
 );

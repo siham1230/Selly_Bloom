@@ -1,5 +1,5 @@
 import { instance } from "../services/instance";
-// import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../store/authStore";
 
 export const registerUser = async (fullName, email, password) => {
     try {
@@ -11,7 +11,7 @@ export const registerUser = async (fullName, email, password) => {
 
         });
         const { token, user } = res.data;
-        // useAuthStore.getState().setAuth(token, user);
+        useAuthStore.getState().setAuth(user, token);
 
         return {
             success: true,
@@ -35,7 +35,7 @@ export const loginUser = async (email, password) => {
             password,
         });
         const { token, user } = res.data;
-        // useAuthStore.getState().setAuth(token, user);
+        useAuthStore.getState().setAuth(user, token);
 
         return {
             success: true,
@@ -56,9 +56,13 @@ export const getCurrentUser = async (token) => {
                 Authorization: `Bearer ${token}`
             }
         });
+
+        const user = res.data.user;
+
+        useAuthStore.getState().setAuth(user, token);
         return {
             success: true,
-            data: res.data.user
+            data: user
         };
     } catch (error) {
         return {
@@ -78,9 +82,13 @@ export const updateProfil = async (token, name, email) => {
                 }
             }
         );
+        const updateUser = res.data.user;
+
+        useAuthStore.getState().setAuth(updateUser, token);
+
         return {
             success: true,
-            data: res.data.user,
+            data: updateUser,
             message: res.data.message
         };
     } catch (error) {
@@ -96,7 +104,7 @@ export const changePassword = async (token, currentPassword, newPassword) => {
         const res = await instance.put("api/auth/change-password",
             { currentPassword, newPassword },
             {
-                header: {
+                headers: {
                     Authorization: `Bearer ${token}`
                 }
             }
@@ -120,11 +128,17 @@ export const logoutUser = async (token) => {
                 Authorization: `Bearer ${token}`
             }
         });
+
+        useAuthStore.getState().logout();
+
+
         return {
             success: true,
-            message: res.data.message
+            message: "Logged out successfully"
         };
     } catch (error) {
+        useAuthStore.getState().logout();
+
         return {
             success: false,
             message: error.response?.data?.error || "Logout failed",

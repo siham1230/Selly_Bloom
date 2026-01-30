@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: ./backend
+    container_name: Selly-backend
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: db
+      DB_NAME: Selly-bloom
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_PORT: 5432
+      JWT_SECRET: siham1234
+      JWT_EXPIRES: 7d
+    volumes:
+      - ./backend:/app        
+      - /app/node_modules
+    depends_on:
+      - db
+    command: npm start
+
+  db:
+    image: postgres:15
+    container_name: Selly-bloom
+    environment:
+      POSTGRES_DB: Selly-bloom
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "54321:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

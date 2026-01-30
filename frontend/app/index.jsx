@@ -10,7 +10,7 @@ const { width } = Dimensions.get("window");
 const images = [
 
     require("../assets/images/gold.png"),
-    require("../assets/images/green.png"),
+    require("../assets/images/selly.png"),
     require("../assets/images/flowers.png"),
 ];
 
@@ -30,7 +30,7 @@ const OnboardingScreen = () => {
 
     if (token) {
 
-        return <Redirect href={'/(tabs)/home'} />
+        // return <Redirect href={'/(auth)/AuthSelection'} />
     }
     return (
 

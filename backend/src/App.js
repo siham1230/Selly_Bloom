@@ -2,6 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from '../src/config/database.js';
+import sequelize from '../src/config/database.js';
+
+try {
+    await sequelize.authenticate();
+    console.log('DB connected');
+
+    await sequelize.sync({ alert: true });
+    console.log('Models synced');
+} catch (error) {
+    console.error('DB error:', error);
+}
+
+
+
 
 import authRoutes from '../src/routes/authRoutes.js';
 import productRoutes from '../src/routes/productRoutes.js';

@@ -8,13 +8,11 @@ import {
 } from '../services/product';
 import { useAuthStore } from '../store/authStore';
 
-// Query keys
 export const productKeys = {
     all: ['products'],
     detail: (id) => ['products', id],
 };
 
-// Get all products
 export const useProducts = () => {
     return useQuery({
         queryKey: productKeys.all,
@@ -28,7 +26,6 @@ export const useProducts = () => {
     });
 };
 
-// Get single product
 export const useProduct = (id) => {
     return useQuery({
         queryKey: productKeys.detail(id),

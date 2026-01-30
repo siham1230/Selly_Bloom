@@ -24,6 +24,5 @@ export const Cart = sequelize.define('Cart', {
     underscored: true
 });
 
-// Cart.belongsTo(Product, { foreignKey: 'productId', as: 'Product' })
 
 export default Cart;

@@ -18,7 +18,6 @@ const seedAll = async () => {
         const hashedPassword2 = await bcrypt.hash("password123", 10);
         const hashedPassword3 = await bcrypt.hash("laila123", 10);
 
-        // ==== USERS ========
 
         const users = await User.bulkCreate(
             [
@@ -52,11 +51,11 @@ const seedAll = async () => {
         const products = await Product.bulkCreate(
             [
                 {
-                    name: "Red Rose Bouquet",
-                    description: "Exerience the timeless beauty of the classical red roses bouqquet, a perfect blend of elegence and sophistication, this stuning arrangement features vibant red roses delicately wraapped in sleek balck wrap. creating a striking contrast that adds a touch of luxury to any occasion.",
+                    name: "Stunning Blue Sky Bouquet",
+                    description: "Celebrate life's special moments with an elegant bouquet featuring White Hydrangea, Light Blue Delphinium, and Blue Gypsophila, beautifully wrapped in black. This exquisite arrangement exudes sophistication and grace, making it the perfect gift for any occasion. The pristine white hydrangeas symbolize purity and gratitude, while the delicate blue delphiniums and gypsophila flowers add a touch of tranquility and charm. Whether it's a birthday, anniversary, or a gesture of appreciation, this stunning bouquet will convey your heartfelt sentiments in the most enchanting way.",
                     price: 49.99,
                     stock: 30,
-                    image: ["https://res.cloudinary.com/due3ly2d3/image/upload/v1768170971/WhatsApp_Image_2026-01-11_at_21.29.32_p36hec.jpg",
+                    image: ["https://res.cloudinary.com/due3ly2d3/image/upload/v1769433364/890fed09-505f-468d-8e07-1315cb557ab2_kdkutv.jpg",
                     ],
                 },
                 {

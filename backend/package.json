@@ -7,16 +7,20 @@
   "scripts": {
     "start": "nodemon src/app.js",
     "seed": "node src/seeders/seedAll.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "docker:build": "docker-compose up --build",
+    "docker:seed": "docker-compose exec backend npm run seed"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "expo-router": "^6.0.21",
     "express": "^5.2.1",
+    "joi": "^18.0.2",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.16.3",
     "react-native-gesture-handler": "^2.30.0",
@@ -25,6 +29,12 @@
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "@babel/core": "^7.28.6",
+    "@babel/preset-env": "^7.28.6",
+    "@types/jest": "^30.0.0",
+    "babel-jest": "^30.2.0",
+    "cross-env": "^10.1.0",
+    "nodemon": "^3.1.11",
+    "ts-jest": "^29.4.6"
   }
 }
